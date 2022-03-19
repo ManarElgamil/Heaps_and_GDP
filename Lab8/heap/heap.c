@@ -9,7 +9,6 @@ Heap* heap_initialize(int dataSize, char* dataName, int (*compare)(void*, void*)
     
     Heap* heap = malloc(sizeof(Heap));
     ArrayList* list = alist_initialize(15, dataSize, dataName);
-
     heap->list = list;
     heap->compare = compare;
     heap->print = print;
@@ -50,17 +49,17 @@ void* heap_remove(Heap* heap){
     //removing the last node
 
     void* removed = alist_remove(heap->list, heap->list->size -1);
-  
+    bool heapified;  
    //  printf("\nhello\n");
       if (removed == NULL){
            return NULL;
       }
       else {
        //    printf("\nhello\n");
-           _heapify(heap, 0);    
+         heapified = _heapify(heap, 0);    
       }
 
-    return removed;
+        return removed;
 }
 
 void* heap_peek(Heap* heap){
@@ -87,17 +86,15 @@ bool heap_contains(Heap* heap, void* element){
     }    
 }
 
-//will be used in the above function, and then this contract should be complete
 
-bool _heapify(Heap* heap, int index){
-    
+bool _heapify(Heap* heap, int index){    
   
     if (heap == NULL){
         return false;    
     }
     
     //it should be heapified by default
-    if (heap->list->size == 1 || heap->list->size == 0){
+    if ( heap->list->size == 0 || heap->list->size == 1){
         
         return true;    
     }
@@ -106,7 +103,8 @@ bool _heapify(Heap* heap, int index){
     int leftChildi = (2*index)+1;
     int rightChildi = (2*index)+2;
     
-    if ( topi <0 || leftChildi < 0 || leftChildi < 0 || topi >= heap->list->size || leftChildi >= heap->list->size || rightChildi >= heap->list->size){
+
+    if ( topi < 0 || leftChildi < 0 || leftChildi < 0 || topi > heap->list->size || leftChildi > heap->list->size || rightChildi > heap->list->size){
         return false;
     }
   
@@ -114,27 +112,30 @@ bool _heapify(Heap* heap, int index){
     void* leftChild = alist_get(heap->list, leftChildi);
     void* rightChild = alist_get(heap->list, rightChildi);
   
-    if (top == NULL || leftChild == NULL || rightChild == NULL){
+    if (top == NULL){
         
             return false;
     }
-
-    if (heap->compare(leftChild, top) > 0){ 
+    
+   //  printf("\n Left child if statement\n");
+    if ( leftChild != NULL && heap->compare(leftChild, top) > 0){ 
            
         topi = leftChildi;    
         top = leftChild;
     }
 
-    if ( heap->compare(rightChild, top) > 0){
+    // printf("\nRight child if statement\n");
+
+    if (  rightChild != NULL && heap->compare(rightChild, top) > 0){
         
+       // printf("\nRight child if statement\n");
         topi = rightChildi;
         top = rightChild;
     }
 
      //just in case the topi value was changed
    if (topi != index){
-      // heap->print(top);
-       swap(heap->list, topi, index);
+       swap(heap->list, index, topi);
        return _heapify(heap, topi);
    }
    else {
