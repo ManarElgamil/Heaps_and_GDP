@@ -42,28 +42,28 @@ void* heap_remove(Heap* heap){
 
     void* removed = alist_remove(heap->list, heap->list->size -1);
     
-     printf("before going to heapify:  ");    
+   //  printf("before going to heapify:  ");    
 
-    for (int i = 0; i < heap->list->size ; i++ ){
+   // for (int i = 0; i < heap->list->size ; i++ ){
         
-        heap->print(alist_get(heap->list, i));    
-    }
+   //     heap->print(alist_get(heap->list, i));    
+   // }
 
-    printf("\n\n");
+  //  printf("\n\n");
     
     //then we heapify down
 
-    printf("hi");
+ //   printf("hi");
     _heapify(heap, 0);
 
-    printf("After going to heapify:  ");
+  //  printf("After going to heapify:  ");
 
-     for (int i = 0; i < heap->list->size ; i++ ){
+  //   for (int i = 0; i < heap->list->size ; i++ ){
 
-         heap->print(alist_get(heap->list, i));
-     }
+//         heap->print(alist_get(heap->list, i));
+//     }
     
-     printf("\n\n");
+  //   printf("\n\n");
     return removed;
 }
 
@@ -95,18 +95,18 @@ bool heap_contains(Heap* heap, void* element){
 
 bool _heapify(Heap* heap, int index){
     
-    printf("hello ");
+  //  printf("hello ");
         
     int topi = index;
     int leftChildi = (2*index)+1;
     int rightChildi = (2*index)+2;
 
-    printf("hello ");
+  //  printf("hello ");
 
     void* top = alist_get(heap->list, topi);
     void* leftChild = alist_get(heap->list, leftChildi);
     void* rightChild = alist_get(heap->list, rightChildi);
-    heap->print(top);
+  //  heap->print(top);
 
     if (heap->compare(leftChild, top) > 0){ 
            
@@ -116,7 +116,7 @@ bool _heapify(Heap* heap, int index){
     //just in case the topi value was changed 
     top =  alist_get(heap->list, topi);
 
-    heap->print(top);
+   // heap->print(top);
 
     if (heap->compare(rightChild, top) > 0){
         
@@ -126,7 +126,7 @@ bool _heapify(Heap* heap, int index){
      //just in case the topi value was changed
      top = alist_get(heap->list, topi);
 
-      heap->print(top);
+    //  heap->print(top);
 
    if (topi != index){
       // heap->print(top);
