@@ -169,18 +169,20 @@ bool alist_destroy(ArrayList* alist)
                                     return true;
 }
 
-void swap(ArrayList* list, int index, int pindex) {
+bool swap(ArrayList* list, int index, int pindex) {
     
     if (list == NULL){
-        return;    
+        return false;    
     }
 
     if (index < 0  || pindex < 0 || index >= list->size || pindex >= list->size){
-        return;    
+        return false;    
     }
    void* temp =  list->arr[pindex];
    list->arr[pindex] = list->arr[index];
    list->arr[index] = temp;
+
+   return true;
 }
 
 

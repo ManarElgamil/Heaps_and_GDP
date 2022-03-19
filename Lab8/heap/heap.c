@@ -19,6 +19,11 @@ Heap* heap_initialize(int dataSize, char* dataName, int (*compare)(void*, void*)
 
 bool heap_insert(Heap* heap, void* element){
      
+     if (heap == NULL || element == NULL){
+        return false;     
+    }
+     
+             
      if (heap->list->size == 0){
         alist_add(heap->list,element);
         return true;    
@@ -34,36 +39,27 @@ bool heap_insert(Heap* heap, void* element){
 }
 
 void* heap_remove(Heap* heap){
-    
-    //swapping the root node with the last node
-    swap(heap->list, heap->list->size -1, 0);
+     
+    //swapping the root node with the last node 
+    bool swapped  =  swap(heap->list, heap->list->size -1, 0);
+
+    if (swapped == false){
+        return NULL;    
+    }
     
     //removing the last node
 
     void* removed = alist_remove(heap->list, heap->list->size -1);
-    
-   //  printf("before going to heapify:  ");    
+  
+   //  printf("\nhello\n");
+      if (removed == NULL){
+           return NULL;
+      }
+      else {
+       //    printf("\nhello\n");
+           _heapify(heap, 0);    
+      }
 
-   // for (int i = 0; i < heap->list->size ; i++ ){
-        
-   //     heap->print(alist_get(heap->list, i));    
-   // }
-
-  //  printf("\n\n");
-    
-    //then we heapify down
-
- //   printf("hi");
-    _heapify(heap, 0);
-
-  //  printf("After going to heapify:  ");
-
-  //   for (int i = 0; i < heap->list->size ; i++ ){
-
-//         heap->print(alist_get(heap->list, i));
-//     }
-    
-  //   printf("\n\n");
     return removed;
 }
 
@@ -95,39 +91,47 @@ bool heap_contains(Heap* heap, void* element){
 
 bool _heapify(Heap* heap, int index){
     
-  //  printf("hello ");
+  
+    if (heap == NULL){
+        return false;    
+    }
+    
+    //it should be heapified by default
+    if (heap->list->size == 1 || heap->list->size == 0){
         
+        return true;    
+    }
+
     int topi = index;
     int leftChildi = (2*index)+1;
     int rightChildi = (2*index)+2;
-
-  //  printf("hello ");
-
+    
+    if ( topi <0 || leftChildi < 0 || leftChildi < 0 || topi >= heap->list->size || leftChildi >= heap->list->size || rightChildi >= heap->list->size){
+        return false;
+    }
+  
     void* top = alist_get(heap->list, topi);
     void* leftChild = alist_get(heap->list, leftChildi);
     void* rightChild = alist_get(heap->list, rightChildi);
-  //  heap->print(top);
+  
+    if (top == NULL || leftChild == NULL || rightChild == NULL){
+        
+            return false;
+    }
 
     if (heap->compare(leftChild, top) > 0){ 
            
         topi = leftChildi;    
+        top = leftChild;
     }
 
-    //just in case the topi value was changed 
-    top =  alist_get(heap->list, topi);
-
-   // heap->print(top);
-
-    if (heap->compare(rightChild, top) > 0){
+    if ( heap->compare(rightChild, top) > 0){
         
         topi = rightChildi;
+        top = rightChild;
     }
 
      //just in case the topi value was changed
-     top = alist_get(heap->list, topi);
-
-    //  heap->print(top);
-
    if (topi != index){
       // heap->print(top);
        swap(heap->list, topi, index);
@@ -154,8 +158,7 @@ bool _heapify_up(Heap* heap, int index){
         index = pindex;
         pindex = (index -1)/2;
         pelement = alist_get(heap->list, pindex);   
-    }
-         
+    }     
     return true;
 }
 

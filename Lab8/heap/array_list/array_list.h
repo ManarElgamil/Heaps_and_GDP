@@ -20,6 +20,6 @@ int alist_index_of(ArrayList*, void*);
 void* alist_remove(ArrayList*, int);
 bool alist_destroy(ArrayList*);
 bool _alist_resize(ArrayList*);
-void swap(ArrayList*, int, int);
+bool swap(ArrayList*, int, int);
 #endif
 
