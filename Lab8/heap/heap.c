@@ -144,23 +144,43 @@ bool _heapify(Heap* heap, int index){
 }
 
 bool _heapify_up(Heap* heap, int index){
-    
+
     int pindex = (index-1)/2;
 
     //so first we get the elements at these indexes and then we compare them using the
     //the compare function in the heap
     
+    //we need if statments here in order to progress, because this might cause a seg fault
+
     void* pelement = alist_get(heap->list, pindex);
     void* element = alist_get(heap->list, index);
 
-    while (index > 0 && heap->compare(pelement, element) < 0){
+    //no need to heapify
+    if (heap->list->size == 1){
+        return true;    
+    }
 
-        swap(heap->list, index, pindex);  
-        index = pindex;
-        pindex = (index -1)/2;
-        pelement = alist_get(heap->list, pindex);   
-    }     
-    return true;
+    if (index < 0 ){
+        return false;    
+    }
+
+    if (element == NULL || pelement == NULL){
+        return false;    
+     }
+
+    int c =  heap->compare(pelement, element);
+
+    if (c >= 0){
+        
+       return true;    
+    }
+
+    else {
+        
+        swap(heap->list, index, pindex);
+        return _heapify_up(heap, pindex);
+    }
+    
 }
 
 
