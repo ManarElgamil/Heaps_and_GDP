@@ -1,0 +1,31 @@
+
+
+
+file ./happy_birthday_geralt
+
+#setting up my break points
+
+break invite_yennefer
+break check_money
+break invite_vesemir
+break invite_geralt
+
+
+# actual debugging commands
+
+run
+set var desire = 25
+c
+n
+n
+n
+n
+set var c = 0
+set var d = 0
+c
+set var memory = malloc(1000)
+c
+set var letter->invitation = 0
+c
+
+
